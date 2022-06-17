@@ -13,9 +13,20 @@ def tabuleiro(n, q):
 		tabuleiros.append(tabuleiro)
 	return tabuleiros
 
-# def todosVizinhos(tabuleiro):
-# 	for i in range(1, len(tabuleiro)):
-
+def todosVizinhos(tabuleiro):
+	vizinhos = []
+	for i in tabuleiro:
+		novoTabuleiro = tabuleiro.copy()
+		temp = tabuleiro[i-1]
+		j = 1
+		while(j <= len(tabuleiro)):
+			if(j == temp):
+				j +=1
+				continue
+			novoTabuleiro[i-1] = j
+			vizinhos.append(novoTabuleiro.copy())
+			j += 1
+	return vizinhos
 
 def numeroAtaques(node):
 	conflict = []
@@ -41,4 +52,5 @@ def numeroAtaques(node):
 	print("numero de ataques: " + str(c))
 	return c
 
-print(tabuleiro(4,6))
+#print(todosVizinhos([1,2,3,4]))
+#print(tabuleiro(4,6))
