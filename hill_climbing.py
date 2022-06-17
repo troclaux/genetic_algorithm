@@ -28,6 +28,10 @@ def todosVizinhos(tabuleiro):
 			j += 1
 	return vizinhos
 
+def umVizinho(tabuleiro):
+	vizinhos = todosVizinhos(tabuleiro)
+	return random.sample(vizinhos, 1)
+
 def numeroAtaques(node):
 	conflict = []
 	for i in node:
@@ -52,5 +56,5 @@ def numeroAtaques(node):
 	print("numero de ataques: " + str(c))
 	return c
 
-#print(todosVizinhos([1,2,3,4]))
+print(umVizinho([1,2,3,4]))
 #print(tabuleiro(4,6))
