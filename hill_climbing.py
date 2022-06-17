@@ -1,13 +1,13 @@
 
-def create_population(size):
-	# TO DO
+import random
 
-def create_individual(size):
-	# TO DO
 
-def convert_representation(individual):
-	# TO DO
 
-def crossover(individual1, individual2):
-	# TO DO
+def tabuleiro(tamanho):
+	tabuleiro = []
+	for i in range(0, tamanho):
+		numero_aleatorio = random.randint(0, tamanho)
+		tabuleiro.append(numero_aleatorio)
+	return tabuleiro
 
+print(tabuleiro(5))
