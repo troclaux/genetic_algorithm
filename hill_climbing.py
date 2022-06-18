@@ -64,7 +64,7 @@ def hillClimbingPrimeiraEscolha(tabuleiro):
 		if(len(lista) == tamanhoMaximo):
 			print("minimo local: " + str(numeroAtaques(tc)))
 			print("Configuração: " + str(tc))
-			break
+			return [tc, numeroAtaques(tc)]
 		if ts in lista:
 			continue
 		if numeroAtaques(ts) >= numeroAtaques(tc):
@@ -80,13 +80,48 @@ def hillClimbingMelhorEscolha(tabuleiro):
 	tc = tabuleiro.copy()
 	vizinhos = todosVizinhos(tc)
 	avaliação = []
+	minvizinhos = []
 	for i in vizinhos:
 		avaliação.append([i,numeroAtaques(i)])
-	for j in avaliação:
-		
-	
+	low = numeroAtaques(tc)
+	for i in avaliação:
+		temp = i[1]
+		if temp < low:
+			low = temp
+	print("low: " + str(low))
+	if low == numeroAtaques(tc):
+		print("minimo local: " + str(numeroAtaques(tc)))
+		print("Configuração: " + str(tc))
+		return [tc, numeroAtaques(tc)]
+	for i in avaliação:
+		if i[1] == low:
+			minvizinhos.append(i[0])
+	print("vizinhos minimos: " + str(minvizinhos))
+	sorteado = random.sample(minvizinhos, 1)
+	escolhido = sorteado[0]
+	print("escolhido: " + str(escolhido))
+	hillClimbingMelhorEscolha(escolhido)
 
-print(hillClimbingPrimeiraEscolha([4,4,4,4]))
-#print(todosVizinhos([3,2,1,4]))
-#umVizinho([1,2,3,4])
-#print(numeroAtaques([4,4,4,4]))
+	
+def mainPrimeiraEscolha(n,q):
+	EstadosFinais = []
+	tabuleiros = tabuleiro(n, q)
+	for i in tabuleiros:
+		temp = hillClimbingPrimeiraEscolha(i)
+		EstadosFinais.append(temp)
+	return EstadosFinais
+
+
+def mainMelhorEscolha(n,q):
+	EstadosFinais = []
+	tabuleiros = tabuleiro(n, q)
+	for i in tabuleiros:
+		temp = hillClimbingMelhorEscolha(i)
+		EstadosFinais.append(temp)
+	return EstadosFinais
+
+mainPrimeiraEscolha(4,50)
+mainMelhorEscolha(4,50)
+
+#hillClimbingPrimeiraEscolha([4,4,4,4])
+#hillClimbingMelhorEscolha([1,2,3,4])
