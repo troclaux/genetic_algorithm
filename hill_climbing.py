@@ -1,5 +1,9 @@
 import random
 
+
+valoresFuncaoHeuristicaPrimeiraEscolha = []
+valoresFuncaoHeuristicaMelhorEscolha = []
+
 def tabuleiro(n, q):
 	tabuleiros = []
 	for q in range(q):
@@ -59,22 +63,28 @@ def hillClimbingPrimeiraEscolha(tabuleiro):
 	tamanhoTabuleiro = len(tabuleiro)
 	tamanhoMaximo = (tamanhoTabuleiro**2 - tamanhoTabuleiro)
 	lista = []
+	numAtaqtc = numeroAtaques(tc)
 	while True:
 		ts = umVizinho(tc)
+		numAtaqts = numeroAtaques(ts)
 		if(len(lista) == tamanhoMaximo):
-			print("minimo local: " + str(numeroAtaques(tc)))
-			print("Configuração: " + str(tc))
-			return [tc, numeroAtaques(tc)]
+			#print("minimo local: " + str(numeroAtaques(tc)))
+			#print("Configuração: " + str(tc))
+			par = [tc, numAtaqtc]
+			valoresFuncaoHeuristicaPrimeiraEscolha.append(numAtaqtc)
+			return par
 		if ts in lista:
 			continue
-		if numeroAtaques(ts) >= numeroAtaques(tc):
-			print("numero de ataques do vizinho: " + str(numeroAtaques(ts)))
+		if numAtaqts >= numAtaqtc:
+			#print("numero de ataques do vizinho: " + str(numeroAtaques(ts)))
 			lista.append(ts)
-			print("lista de vizinhos descobertos: " + str(lista))
-		if numeroAtaques(ts) < numeroAtaques(tc):
-			print("pulei para vizinho: " + str(ts))
-			hillClimbingPrimeiraEscolha(ts)
-			break
+			#print("lista de vizinhos descobertos: " + str(lista))
+		if numAtaqts < numAtaqtc:
+			#print("pulei para vizinho: " + str(ts))
+			valoresFuncaoHeuristicaPrimeiraEscolha.append(numAtaqtc)
+			return hillClimbingPrimeiraEscolha(ts)
+	
+	
 
 def hillClimbingMelhorEscolha(tabuleiro):
 	tc = tabuleiro.copy()
@@ -88,19 +98,24 @@ def hillClimbingMelhorEscolha(tabuleiro):
 		temp = i[1]
 		if temp < low:
 			low = temp
-	print("low: " + str(low))
+	#print("low: " + str(low))
 	if low == numeroAtaques(tc):
-		print("minimo local: " + str(numeroAtaques(tc)))
-		print("Configuração: " + str(tc))
-		return [tc, numeroAtaques(tc)]
+		numAtaq = numeroAtaques(tc)
+		#print("minimo local: " + str(numAtaq))
+		#print("Configuração: " + str(tc))
+		par = [tc, numAtaq]
+		#print("par: " + str(par))
+		#valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
+		return par
 	for i in avaliação:
 		if i[1] == low:
 			minvizinhos.append(i[0])
-	print("vizinhos minimos: " + str(minvizinhos))
+	#print("vizinhos minimos: " + str(minvizinhos))
 	sorteado = random.sample(minvizinhos, 1)
 	escolhido = sorteado[0]
-	print("escolhido: " + str(escolhido))
-	hillClimbingMelhorEscolha(escolhido)
+	#print("escolhido: " + str(escolhido))
+	#valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
+	return hillClimbingMelhorEscolha(escolhido)
 
 	
 def mainPrimeiraEscolha(n,q):
@@ -120,8 +135,15 @@ def mainMelhorEscolha(n,q):
 		EstadosFinais.append(temp)
 	return EstadosFinais
 
-mainPrimeiraEscolha(4,50)
-mainMelhorEscolha(4,50)
+print(mainPrimeiraEscolha(4,50))
+print(mainMelhorEscolha(4,50))
+
+#def analise(tamanhoTabuleiro, numeroSimulacoes):
+#	amostraPrimeiraEscolha = mainPrimeiraEscolha(tamanhoTabuleiro, numeroSimulacoes)
+#	amostraMelhorEscolha = mainPrimeiraEscolha(tamanhoTabuleiro, numeroSimulacoes)
+#	for i in amostraPrimeiraEscolha
+
+	
 
 #hillClimbingPrimeiraEscolha([4,4,4,4])
 #hillClimbingMelhorEscolha([1,2,3,4])
