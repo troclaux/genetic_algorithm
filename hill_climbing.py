@@ -1,5 +1,6 @@
 import random
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 valoresFuncaoHeuristicaPrimeiraEscolha = []
 valoresFuncaoHeuristicaMelhorEscolha = []
@@ -72,6 +73,7 @@ def hillClimbingPrimeiraEscolha(tabuleiro):
 			#print("Configuração: " + str(tc))
 			par = [tc, numAtaqtc]
 			valoresFuncaoHeuristicaPrimeiraEscolha.append(numAtaqtc)
+			#print(valoresFuncaoHeuristicaPrimeiraEscolha)
 			return par
 		if ts in lista:
 			continue
@@ -82,6 +84,7 @@ def hillClimbingPrimeiraEscolha(tabuleiro):
 		if numAtaqts < numAtaqtc:
 			#print("pulei para vizinho: " + str(ts))
 			valoresFuncaoHeuristicaPrimeiraEscolha.append(numAtaqtc)
+			#print(valoresFuncaoHeuristicaPrimeiraEscolha)
 			return hillClimbingPrimeiraEscolha(ts)
 	
 	
@@ -91,6 +94,7 @@ def hillClimbingMelhorEscolha(tabuleiro):
 	vizinhos = todosVizinhos(tc)
 	avaliação = []
 	minvizinhos = []
+	numAtaqtc = numeroAtaques(tc)
 	for i in vizinhos:
 		avaliação.append([i,numeroAtaques(i)])
 	low = numeroAtaques(tc)
@@ -100,12 +104,12 @@ def hillClimbingMelhorEscolha(tabuleiro):
 			low = temp
 	#print("low: " + str(low))
 	if low == numeroAtaques(tc):
-		numAtaq = numeroAtaques(tc)
 		#print("minimo local: " + str(numAtaq))
 		#print("Configuração: " + str(tc))
-		par = [tc, numAtaq]
+		par = [tc, numAtaqtc]
 		#print("par: " + str(par))
-		#valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
+		valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
+		print(valoresFuncaoHeuristicaMelhorEscolha)
 		return par
 	for i in avaliação:
 		if i[1] == low:
@@ -114,7 +118,8 @@ def hillClimbingMelhorEscolha(tabuleiro):
 	sorteado = random.sample(minvizinhos, 1)
 	escolhido = sorteado[0]
 	#print("escolhido: " + str(escolhido))
-	#valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
+	valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
+	print(valoresFuncaoHeuristicaMelhorEscolha)
 	return hillClimbingMelhorEscolha(escolhido)
 
 	
@@ -135,15 +140,48 @@ def mainMelhorEscolha(n,q):
 		EstadosFinais.append(temp)
 	return EstadosFinais
 
-print(mainPrimeiraEscolha(4,50))
-print(mainMelhorEscolha(4,50))
-
-#def analise(tamanhoTabuleiro, numeroSimulacoes):
-#	amostraPrimeiraEscolha = mainPrimeiraEscolha(tamanhoTabuleiro, numeroSimulacoes)
-#	amostraMelhorEscolha = mainPrimeiraEscolha(tamanhoTabuleiro, numeroSimulacoes)
-#	for i in amostraPrimeiraEscolha
-
+def analise(tamanhoTabuleiro, numerosimulações):
+	#valoresFuncaoHeuristicaPrimeiraEscolha = [] 
+	#valoresFuncaoHeuristicaMelhorEscolha = []
+	EstadosFinaisPrimeiraEscolha = mainPrimeiraEscolha(tamanhoTabuleiro,numerosimulações)
+	EstadosFinaisMelhorEscolha= mainMelhorEscolha(tamanhoTabuleiro,numerosimulações)
+	sum = 0
+	for n in range(1,tamanhoTabuleiro):
+		sum += n
+	x1 = []
+	x2 = []
+	for i in range(len(valoresFuncaoHeuristicaPrimeiraEscolha)):
+		x1.append(i+1)
+	for i in range(len(valoresFuncaoHeuristicaMelhorEscolha)):
+		x2.append(i+1)
 	
+	y1 = valoresFuncaoHeuristicaPrimeiraEscolha
+	y2 = valoresFuncaoHeuristicaMelhorEscolha
+
+	print("x1: " + str(x1))
+	print("x2: " + str(x2))
+	print("y1: " + str(y1))
+	print("y2: " + str(y2))
+	# plotting the points
+	plt.grid(True)
+	plt.plot(x1, y1)
+	plt.plot(x2, y2)
+	# naming the x axis
+	plt.xlabel('x - axis')
+	# naming the y axis
+	plt.ylabel('y - axis')
+
+	# giving a title to my graph
+	plt.title('My first graph!')
+
+	# function to show the plot
+	plt.show()
+
+
+analise(16,1)
+
+#print(mainPrimeiraEscolha(4,1))
+#print(mainMelhorEscolha(4,1))	
 
 #hillClimbingPrimeiraEscolha([4,4,4,4])
 #hillClimbingMelhorEscolha([1,2,3,4])
