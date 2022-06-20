@@ -5,10 +5,6 @@ import numpy as np
 valoresFuncaoHeuristicaPrimeiraEscolha = []
 valoresFuncaoHeuristicaMelhorEscolha = []
 
-
-valoresFuncaoHeuristicaPrimeiraEscolha = []
-valoresFuncaoHeuristicaMelhorEscolha = []
-
 def tabuleiro(n, q):
 	tabuleiros = []
 	for q in range(q):
@@ -48,7 +44,6 @@ def numeroAtaques(node):
 			if (node[i] == node[j]):
 				if ([i, j] in conflict or [j, i] in conflict):
 					continue
-				#print("rainha " + str(i) + " ataca rainha " + str(j))
 				conflict.append([i, j])
 				continue
 			if (node[i] != node[j]):
@@ -56,11 +51,9 @@ def numeroAtaques(node):
 				if (node[i] == node[j] + d or node[i] == node[j] - d):
 					if ([i, j] in conflict or [j, i] in conflict):
 						continue
-					#print("rainha " + str(i) + " ataca rainha " + str(j))
 					conflict.append([i, j])
 					continue
 	c = len(conflict)
-	#print("numero de ataques: " + str(c))
 	return c
 
 def hillClimbingPrimeiraEscolha(tabuleiro):
@@ -73,22 +66,15 @@ def hillClimbingPrimeiraEscolha(tabuleiro):
 		ts = umVizinho(tc)
 		numAtaqts = numeroAtaques(ts)
 		if(len(lista) == tamanhoMaximo):
-			#print("minimo local: " + str(numeroAtaques(tc)))
-			#print("Configuração: " + str(tc))
 			par = [tc, numAtaqtc]
 			valoresFuncaoHeuristicaPrimeiraEscolha.append(numAtaqtc)
-			#print(valoresFuncaoHeuristicaPrimeiraEscolha)
 			return par
 		if ts in lista:
 			continue
 		if numAtaqts >= numAtaqtc:
-			#print("numero de ataques do vizinho: " + str(numeroAtaques(ts)))
 			lista.append(ts)
-			#print("lista de vizinhos descobertos: " + str(lista))
 		if numAtaqts < numAtaqtc:
-			#print("pulei para vizinho: " + str(ts))
 			valoresFuncaoHeuristicaPrimeiraEscolha.append(numAtaqtc)
-			#print(valoresFuncaoHeuristicaPrimeiraEscolha)
 			return hillClimbingPrimeiraEscolha(ts)
 	
 	
@@ -106,24 +92,16 @@ def hillClimbingMelhorEscolha(tabuleiro):
 		temp = i[1]
 		if temp < low:
 			low = temp
-	#print("low: " + str(low))
 	if low == numeroAtaques(tc):
-		#print("minimo local: " + str(numAtaq))
-		#print("Configuração: " + str(tc))
 		par = [tc, numAtaqtc]
-		#print("par: " + str(par))
 		valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
-		print(valoresFuncaoHeuristicaMelhorEscolha)
 		return par
 	for i in avaliação:
 		if i[1] == low:
 			minvizinhos.append(i[0])
-	#print("vizinhos minimos: " + str(minvizinhos))
 	sorteado = random.sample(minvizinhos, 1)
 	escolhido = sorteado[0]
-	#print("escolhido: " + str(escolhido))
 	valoresFuncaoHeuristicaMelhorEscolha.append(numAtaqtc)
-	print(valoresFuncaoHeuristicaMelhorEscolha)
 	return hillClimbingMelhorEscolha(escolhido)
 
 	
@@ -145,8 +123,8 @@ def mainMelhorEscolha(n,q):
 	return EstadosFinais
 
 def analise(tamanhoTabuleiro, numerosimulações):
-	#valoresFuncaoHeuristicaPrimeiraEscolha = [] 
-	#valoresFuncaoHeuristicaMelhorEscolha = []
+	valoresFuncaoHeuristicaPrimeiraEscolha.clear() 
+	valoresFuncaoHeuristicaMelhorEscolha.clear()
 	EstadosFinaisPrimeiraEscolha = mainPrimeiraEscolha(tamanhoTabuleiro,numerosimulações)
 	EstadosFinaisMelhorEscolha= mainMelhorEscolha(tamanhoTabuleiro,numerosimulações)
 	sum = 0
@@ -162,30 +140,23 @@ def analise(tamanhoTabuleiro, numerosimulações):
 	y1 = valoresFuncaoHeuristicaPrimeiraEscolha
 	y2 = valoresFuncaoHeuristicaMelhorEscolha
 
-	print("x1: " + str(x1))
-	print("x2: " + str(x2))
-	print("y1: " + str(y1))
-	print("y2: " + str(y2))
 	# plotting the points
 	plt.grid(True)
 	plt.plot(x1, y1)
 	plt.plot(x2, y2)
 	# naming the x axis
-	plt.xlabel('x - axis')
+	plt.xlabel('Numero de estados até chegar ao final')
 	# naming the y axis
-	plt.ylabel('y - axis')
+	plt.ylabel('Numero de ataques')
 
 	# giving a title to my graph
-	plt.title('My first graph!')
+	plt.title('Grafico de desempenho comparando primeira e melhor escolha')
 
 	# function to show the plot
 	plt.show()
 
 
+analise(4,1)
+analise(8,1)
 analise(16,1)
-
-#print(mainPrimeiraEscolha(4,1))
-#print(mainMelhorEscolha(4,1))	
-
-#hillClimbingPrimeiraEscolha([4,4,4,4])
-#hillClimbingMelhorEscolha([1,2,3,4])
+analise(32,1)
